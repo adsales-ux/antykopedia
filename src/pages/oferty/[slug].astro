@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const oferty = await getCollection('oferty');
+  return oferty.map((o) => ({
+    params: { slug: o.id.replace('.md', '') },
+    props: { oferta: o }
+  }));
+}
+
+const { oferta } = Astro.props;
+const { Content } = await render(oferta);
+const d = oferta.data;
+const dateStr = new Date(d.pubDate).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const typLabel = d.typ === 'kupię' ? '🔎 Kupię' : d.typ === 'zamienię' ? '🔄 Zamienię' : '🏷️ Sprzedam';
+
+const ogTitle = `${d.title} — ${d.cena.toLocaleString('pl-PL')} zł | Antykopedia.pl`;
+const canonical = `https://antykopedia.pl/oferty/${oferta.id.replace('.md','')}/`;
+---
+<BaseLayout
+  title={ogTitle}
+  description={d.description}
+  ogImage={d.zdjecie}
+  canonical={canonical}
+>
+  <nav class="breadcrumbs">
+    <a href="/">Home</a> › <a href="/oferty/">Marketplace</a> › {d.title}
+  </nav>
+
+  <article class="oferta">
+    <div class="oferta-grid">
+      {d.zdjecie && (
+        <div class="o-foto">
+          <img src={d.zdjecie} alt={d.title} loading="eager" />
+        </div>
+      )}
+
+      <aside class="o-side">
+        <span class="o-typ">{typLabel}</span>
+        <h1>{d.title}</h1>
+        <p class="o-cena">{d.cena.toLocaleString('pl-PL')} zł</p>
+
+        <dl class="o-meta">
+          <dt>📍 Lokalizacja</dt><dd>{d.lokalizacja}</dd>
+          <dt>🏷️ Kategoria</dt><dd>{d.kategoria}</dd>
+          <dt>🧪 Stan</dt><dd>{d.stan}</dd>
+          {d.rok && (<><dt>📅 Rok/epoka</dt><dd>{d.rok}</dd></>)}
+          <dt>🕐 Dodano</dt><dd>{dateStr}</dd>
+        </dl>
+
+        <div class="o-contact">
+          <h3>📞 Kontakt z ogłoszeniodawcą</h3>
+          {d.kontaktEmail && (<p>✉️ <a href={`mailto:${d.kontaktEmail}?subject=${encodeURIComponent('Antykopedia: ' + d.title)}`}>{d.kontaktEmail}</a></p>)}
+          {d.kontaktTel && (<p>📱 <a href={`tel:${d.kontaktTel}`}>{d.kontaktTel}</a></p>)}
+          {!d.kontaktEmail && !d.kontaktTel && (<p>Przez formularz na stronie — <a href="/kontakt/">kontakt</a></p>)}
+        </div>
+
+        <div class="o-share">
+          <h4>📣 Udostępnij:</h4>
+          <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonical)}`} target="_blank" rel="noopener">Facebook</a>
+          <a href={`https://wa.me/?text=${encodeURIComponent(d.title + ' - ' + canonical)}`} target="_blank" rel="noopener">WhatsApp</a>
+          <a href={`mailto:?subject=${encodeURIComponent(d.title)}&body=${encodeURIComponent(canonical)}`}>E-mail</a>
+        </div>
+      </aside>
+    </div>
+
+    <section class="o-desc">
+      <h2>Opis</h2>
+      <Content />
+    </section>
+
+    <section class="o-safety">
+      <h3>⚠️ Bezpieczny zakup — co sprawdzić</h3>
+      <ul>
+        <li>Zawsze <strong>oglądaj przedmiot osobiście</strong> przed zakupem powyżej 1 000 zł</li>
+        <li>Dla antyków powyżej 5 000 zł — <strong>żądaj ekspertyzy</strong> rzeczoznawcy</li>
+        <li>Płacić gotówką <strong>tylko przy odbiorze osobistym</strong></li>
+        <li>Przelewy — <strong>escrow</strong> (np. Przelewy24, PayU) lub przy odbiorze</li>
+        <li>Nigdy nie wysyłaj zaliczki bez sprawdzenia tożsamości sprzedawcy</li>
+      </ul>
+      <p><em>Antykopedia.pl nie pośredniczy w transakcjach — ogłoszenia weryfikujemy, ale odpowiedzialność za transakcję ponoszą strony.</em></p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .oferta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+  .o-foto { background: white; border: 1px solid #e5dcc6; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 400px; }
+  .o-foto img { width: 100%; height: auto; max-height: 500px; object-fit: cover; }
+  .o-side { background: white; border: 1px solid #e5dcc6; border-radius: 12px; padding: 28px; }
+  .o-typ { display: inline-block; background: #c9a961; color: #1a2847; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .o-side h1 { color: #1a2847; font-size: 24px; margin: 0 0 12px; }
+  .o-cena { color: #a08540; font-size: 32px; font-weight: 700; font-family: 'Playfair Display', serif; margin: 0 0 20px; }
+  .o-meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0 0 20px; padding: 16px 0; border-top: 1px solid #e5dcc6; border-bottom: 1px solid #e5dcc6; }
+  .o-meta dt { color: #666; font-size: 14px; }
+  .o-meta dd { color: #1a2847; font-weight: 600; margin: 0; }
+  .o-contact { background: linear-gradient(135deg, #f8f4ec, #ebe4d2); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  .o-contact h3 { color: #1a2847; margin: 0 0 10px; font-size: 16px; }
+  .o-contact p { margin: 4px 0; }
+  .o-contact a { color: #a08540; font-weight: 700; }
+  .o-share { padding-top: 16px; border-top: 1px solid #e5dcc6; }
+  .o-share h4 { color: #1a2847; margin: 0 0 10px; font-size: 14px; }
+  .o-share a { display: inline-block; margin-right: 10px; color: #a08540; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .o-share a:hover { text-decoration: underline; }
+
+  .o-desc { background: white; padding: 28px; border-radius: 12px; border: 1px solid #e5dcc6; margin-bottom: 24px; }
+  .o-desc h2 { color: #1a2847; border-bottom: 2px solid #c9a961; padding-bottom: 8px; margin-bottom: 16px; }
+  .o-desc p { line-height: 1.7; margin: 10px 0; }
+  .o-desc strong { color: #1a2847; }
+
+  .o-safety { background: #fff5e6; border-left: 4px solid #c9a961; padding: 20px 24px; border-radius: 8px; }
+  .o-safety h3 { color: #1a2847; margin: 0 0 10px; }
+  .o-safety ul { margin-left: 20px; line-height: 1.9; }
+  .o-safety em { color: #666; font-size: 13px; }
+
+  @media (max-width: 740px) {
+    .oferta-grid { grid-template-columns: 1fr; }
+    .o-foto { min-height: 280px; }
+    .o-side h1 { font-size: 20px; }
+    .o-cena { font-size: 28px; }
+  }
+</style>

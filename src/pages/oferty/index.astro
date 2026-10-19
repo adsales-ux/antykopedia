@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const ofertyAll = await getCollection('oferty');
+const oferty = ofertyAll.sort((a,b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+
+const kategorie = [...new Set(oferty.map(o => o.data.kategoria))];
+---
+<BaseLayout
+  title="Marketplace antyków — kupuj i sprzedawaj | Antykopedia.pl"
+  description="Marketplace antyków w Polsce. Meble biedermeier, zegary, obrazy, srebra, monety. Kupuj bezpośrednio od kolekcjonerów. Dodaj swoje ogłoszenie bezpłatnie."
+>
+  <nav class="breadcrumbs"><a href="/">Home</a> › Marketplace</nav>
+
+  <section class="hero-mp">
+    <h1>🏛️ Marketplace Antyków</h1>
+    <p class="lead">Kupuj bezpośrednio od kolekcjonerów. Bez prowizji od transakcji.</p>
+    <a href="#dodaj" class="hero-cta">+ Dodaj swoje ogłoszenie</a>
+  </section>
+
+  {oferty.length === 0 ? (
+    <section class="empty">
+      <h2>Marketplace startuje</h2>
+      <p>Pierwsze ogłoszenia pojawią się wkrótce. Chcesz dodać swoje?</p>
+      <a href="#dodaj" class="cta">Dodaj ofertę →</a>
+    </section>
+  ) : (
+    <>
+      <div class="filters">
+        <strong>Kategoria:</strong>
+        <a href="/oferty/" class="chip active">Wszystkie ({oferty.length})</a>
+        {kategorie.map(k => (
+          <a href={`/oferty/kat/${k}/`} class="chip">{k} ({oferty.filter(o => o.data.kategoria === k).length})</a>
+        ))}
+      </div>
+
+      <div class="oferty-grid">
+        {oferty.map(o => (
+          <a href={`/oferty/${o.id.replace('.md','')}/`} class="oferta-card">
+            {o.data.zdjecie && (
+              <div class="o-img" style={`background-image:url('${o.data.zdjecie}')`}></div>
+            )}
+            <div class="o-body">
+              <span class="o-typ">{o.data.typ === 'sprzedam' ? '🏷️ Sprzedam' : o.data.typ === 'kupię' ? '🔎 Kupię' : '🔄 Zamienię'}</span>
+              <h3>{o.data.title}</h3>
+              <p class="o-desc">{o.data.description}</p>
+              <div class="o-meta">
+                <span class="o-cena">{o.data.cena.toLocaleString('pl-PL')} zł</span>
+                <span class="o-loc">📍 {o.data.lokalizacja}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </>
+  )}
+
+  <section id="dodaj" class="add-form">
+    <h2>➕ Dodaj swoje ogłoszenie</h2>
+    <p>Wypełnij formularz — opublikujemy je zazwyczaj w 24h (po weryfikacji). <strong>Bezpłatnie, bez prowizji.</strong></p>
+
+    <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" class="form-add">
+      <input type="hidden" name="access_key" value="558d8c9c-8ff8-42e8-825c-d507356e1bf2" />
+      <input type="hidden" name="subject" value="Nowe ogłoszenie — Marketplace Antykopedia" />
+      <input type="hidden" name="from_name" value="Antykopedia Marketplace" />
+      <input type="checkbox" name="botcheck" style="display:none" />
+
+      <label>Tytuł oferty <span class="req">*</span>
+        <input type="text" name="tytul" required placeholder="np. Komoda biedermeier czereśnia 1830" />
+      </label>
+
+      <div class="row-2">
+        <label>Kategoria <span class="req">*</span>
+          <select name="kategoria" required>
+            <option value="">— wybierz —</option>
+            <option value="meble">Meble</option>
+            <option value="zegary">Zegary</option>
+            <option value="obrazy">Obrazy / grafika</option>
+            <option value="srebra">Srebra / platerowanie</option>
+            <option value="numizmatyka">Monety / numizmatyka</option>
+            <option value="porcelana">Porcelana / szkło</option>
+            <option value="biżuteria">Biżuteria</option>
+            <option value="militaria">Militaria / odznaczenia</option>
+            <option value="książki">Książki / dokumenty</option>
+            <option value="inne">Inne</option>
+          </select>
+        </label>
+        <label>Typ <span class="req">*</span>
+          <select name="typ" required>
+            <option value="sprzedam">🏷️ Sprzedam</option>
+            <option value="kupię">🔎 Kupię</option>
+            <option value="zamienię">🔄 Zamienię</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row-2">
+        <label>Cena (zł) <span class="req">*</span>
+          <input type="number" name="cena" required min="1" placeholder="np. 2500" />
+        </label>
+        <label>Stan
+          <select name="stan">
+            <option value="dobry">Dobry</option>
+            <option value="bardzo-dobry">Bardzo dobry</option>
+            <option value="nowy">Jak nowy</option>
+            <option value="do-renowacji">Do renowacji</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row-2">
+        <label>Lokalizacja (miasto) <span class="req">*</span>
+          <input type="text" name="lokalizacja" required placeholder="np. Kraków" />
+        </label>
+        <label>Rok / epoka
+          <input type="text" name="rok" placeholder="np. XIX w. / 1920-1940" />
+        </label>
+      </div>
+
+      <label>Opis przedmiotu <span class="req">*</span>
+        <textarea name="opis" required rows="5" placeholder="Materiał, wymiary, proweniencja, stan szczegółowy, dodatkowe informacje..."></textarea>
+      </label>
+
+      <label>Zdjęcia (do 5 szt., max 5MB każde)
+        <input type="file" name="zdjecia" accept="image/*" multiple />
+      </label>
+
+      <div class="row-2">
+        <label>Twój e-mail <span class="req">*</span>
+          <input type="email" name="email" required placeholder="twoj@email.pl" />
+        </label>
+        <label>Telefon (opcjonalnie)
+          <input type="tel" name="telefon" placeholder="+48 ..." />
+        </label>
+      </div>
+
+      <label class="chk">
+        <input type="checkbox" name="rodo" required />
+        <span>Zgadzam się na publikację ogłoszenia na antykopedia.pl i przetwarzanie danych kontaktowych w tym celu (RODO).</span>
+      </label>
+
+      <input type="hidden" name="redirect" value="https://antykopedia.pl/dziekujemy/" />
+
+      <button type="submit">Wyślij do publikacji →</button>
+      <p class="form-info">💡 Weryfikujemy ogłoszenia (zdjęcia, autentyczność) i publikujemy w 24h. Bezpłatnie, bez prowizji od sprzedaży.</p>
+    </form>
+  </section>
+
+  <section class="share-info">
+    <h2>📣 Jak promować swoją ofertę</h2>
+    <p>Po publikacji otrzymasz <strong>bezpośredni link</strong> do swojej oferty na antykopedia.pl. Udostępnij go gdzie chcesz:</p>
+    <ul>
+      <li>🏷️ <strong>OLX</strong> — wklej link w opisie ogłoszenia jako "więcej informacji + zdjęć"</li>
+      <li>💬 <strong>Facebook / grupy antykwariuszy</strong> — link z preview (OpenGraph)</li>
+      <li>📷 <strong>Instagram / stories</strong> — link w bio lub swipe-up</li>
+      <li>💌 <strong>E-mail / Messenger</strong> — ładny preview automatycznie</li>
+    </ul>
+    <p>Każda oferta ma <strong>OpenGraph preview</strong> ze zdjęciem + ceną, więc wygląda profesjonalnie wszędzie.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-mp { background: linear-gradient(135deg, #1a2847, #243b63); color: #f8f4ec; padding: 40px; border-radius: 12px; text-align: center; margin-bottom: 24px; }
+  .hero-mp h1 { color: #c9a961; font-size: 36px; margin-bottom: 8px; }
+  .hero-mp .lead { font-size: 17px; margin-bottom: 20px; }
+  .hero-cta { display: inline-block; background: #c9a961; color: #1a2847; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; }
+  .hero-cta:hover { background: #d4b670; }
+
+  .filters { margin: 24px 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filters strong { color: #1a2847; margin-right: 8px; }
+  .chip { background: white; border: 1px solid #e5dcc6; color: #1a2847; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500; }
+  .chip:hover { border-color: #c9a961; text-decoration: none; }
+  .chip.active { background: #c9a961; color: #1a2847; font-weight: 700; }
+
+  .oferty-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin: 24px 0; }
+  .oferta-card { background: white; border: 1px solid #e5dcc6; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: all .2s; }
+  .oferta-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,40,71,.12); border-color: #c9a961; text-decoration: none; }
+  .o-img { height: 200px; background-size: cover; background-position: center; background-color: #f8f4ec; }
+  .o-body { padding: 18px; }
+  .o-typ { display: inline-block; background: #c9a961; color: #1a2847; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
+  .o-body h3 { color: #1a2847; font-size: 17px; margin: 0 0 6px; line-height: 1.3; }
+  .o-desc { color: #666; font-size: 13px; margin-bottom: 10px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .o-meta { display: flex; justify-content: space-between; align-items: center; }
+  .o-cena { color: #1a2847; font-weight: 700; font-size: 18px; }
+  .o-loc { color: #666; font-size: 12px; }
+
+  .empty { background: linear-gradient(135deg, #f8f4ec, #ebe4d2); padding: 48px 24px; border-radius: 12px; text-align: center; margin: 24px 0; }
+  .empty h2 { color: #1a2847; }
+  .empty .cta { display: inline-block; background: #c9a961; color: #1a2847; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; margin-top: 12px; }
+
+  .add-form { background: white; padding: 32px; border-radius: 12px; border: 1px solid #e5dcc6; margin: 32px 0; }
+  .add-form h2 { color: #1a2847; margin: 0 0 12px; }
+  .add-form > p { color: #666; margin-bottom: 20px; }
+  .form-add label { display: block; margin: 14px 0 6px; color: #1a2847; font-weight: 600; font-size: 14px; }
+  .form-add input[type="text"], .form-add input[type="email"], .form-add input[type="tel"], .form-add input[type="number"], .form-add select, .form-add textarea { width: 100%; padding: 10px 12px; border: 1px solid #c9a961; border-radius: 8px; font-size: 15px; font-family: inherit; }
+  .form-add input[type="file"] { padding: 8px; font-size: 14px; }
+  .form-add .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-add .req { color: #c9341a; }
+  .form-add .chk { display: flex; align-items: start; gap: 10px; font-weight: 400; font-size: 13px; color: #333; margin-top: 20px; }
+  .form-add .chk input { margin-top: 3px; }
+  .form-add button { background: #1a2847; color: #c9a961; padding: 14px 32px; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 20px; width: 100%; }
+  .form-add button:hover { background: #243b63; }
+  .form-info { font-size: 13px; color: #666; margin-top: 14px; }
+
+  .share-info { background: linear-gradient(135deg, #f8f4ec, #ebe4d2); padding: 24px; border-radius: 12px; margin: 24px 0; }
+  .share-info h2 { color: #1a2847; margin: 0 0 12px; }
+  .share-info ul { line-height: 2; margin-left: 20px; }
+  .share-info strong { color: #1a2847; }
+
+  @media (max-width: 640px) {
+    .hero-mp { padding: 24px; }
+    .hero-mp h1 { font-size: 26px; }
+    .form-add .row-2 { grid-template-columns: 1fr; }
+    .add-form { padding: 20px; }
+  }
+</style>
