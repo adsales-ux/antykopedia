@@ -38,6 +38,26 @@ const fullCanonical = canonical || `https://antykopedia.pl${Astro.url.pathname}`
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <!-- Google Consent Mode V2 (denied by default — RODO/EOG compliance) -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500
+    });
+  </script>
+
+  <!-- Google Analytics 4 (G-9W4B691XN7 — antykopedia.pl) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9W4B691XN7"></script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-9W4B691XN7', { anonymize_ip: true });
+  </script>
+
   <!-- AdSense (ten sam co cennikibudowlane: pub-1844680208723982) -->
   <meta name="google-adsense-account" content="ca-pub-1844680208723982" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1844680208723982" crossorigin="anonymous"></script>
