@@ -1,0 +1,120 @@
+---
+// Inline CTA widget — pojawia się w połowie artykułu (po pierwszym <h2>)
+// Rozmiar zbliżony do Oferteo widget box (~320x280px na desktop, full-width mobile)
+// Cel: networking — zbieranie kontaktów od kolekcjonerów, spadkobierców, pasjonatów
+interface Props {
+  variant?: 'pytanie' | 'wycena' | 'kontakt';
+}
+const { variant = 'pytanie' } = Astro.props;
+
+const variants = {
+  pytanie: {
+    icon: '🗝️',
+    title: 'Masz pytanie o antyk?',
+    text: 'Odziedziczyłeś kolekcję? Masz w rodzinie kolekcjonera? Napisz — bezpłatnie odpowiemy w 24h.',
+    btn: 'Napisz do nas →',
+  },
+  wycena: {
+    icon: '🗝️',
+    title: 'Wyceń swój antyk bezpłatnie',
+    text: 'Prześlij zdjęcie i opis — nasi eksperci wycenią go w 24h. Bez zobowiązań.',
+    btn: 'Wyceń teraz →',
+  },
+  kontakt: {
+    icon: '🤝',
+    title: 'Znasz podobnego pasjonata?',
+    text: 'Odziedziczyłeś antyki? Znasz kolekcjonera, który chce sprzedać? Napisz — pomożemy znaleźć kontakt lub kupca.',
+    btn: 'Nawiąż kontakt →',
+  },
+};
+const v = variants[variant];
+---
+<aside class={`inline-cta ${variant}`}>
+  <div class="cta-icon">{v.icon}</div>
+  <h3 class="cta-title">{v.title}</h3>
+  <p class="cta-text">{v.text}</p>
+  <a href="/wycen/" class="cta-btn">{v.btn}</a>
+  <p class="cta-small">✓ Bezpłatnie   ✓ Odpowiedź w 24h   ✓ Bez zobowiązań</p>
+</aside>
+
+<style>
+  .inline-cta {
+    background: linear-gradient(135deg, #1a2847 0%, #243b63 100%);
+    color: #f8f4ec;
+    padding: 28px 24px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 36px auto;
+    max-width: 480px;
+    border: 2px solid #c9a961;
+    box-shadow: 0 8px 24px rgba(26, 40, 71, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .inline-cta::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    background: rgba(201, 169, 97, 0.15);
+    border-radius: 50%;
+  }
+  .cta-icon {
+    font-size: 42px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    color: #c9a961 !important;
+    font-size: 22px !important;
+    margin: 0 0 10px !important;
+    border: none !important;
+    padding: 0 !important;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-text {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 18px !important;
+    color: #e8e0cc;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: #c9a961;
+    color: #1a2847 !important;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none !important;
+    font-size: 15px;
+    transition: all .2s;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-btn:hover {
+    background: #d4b670;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(201, 169, 97, 0.4);
+  }
+  .cta-small {
+    font-size: 11px !important;
+    color: #a0956e !important;
+    margin: 14px 0 0 !important;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 640px) {
+    .inline-cta { padding: 22px 18px; margin: 24px auto; }
+    .cta-title { font-size: 18px !important; }
+    .cta-text { font-size: 13px; }
+    .cta-small { font-size: 10px !important; }
+  }
+</style>

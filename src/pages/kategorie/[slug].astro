@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LeadForm from '../../components/LeadForm.astro';
+import InlineCta from '../../components/InlineCta.astro';
 import { getCollection, render } from 'astro:content';
 import { kategorie as kategorieData } from '../../data/kategorie.js';
 
@@ -28,7 +29,7 @@ const katMeta = kategorieData.find(k => k.slug === slug) || {};
 
   <article class="pillar">
     <header class="pillar-head">
-      <span class="pillar-icon">{katMeta.icon || '💎'}</span>
+      <span class="pillar-icon">{katMeta.icon || '🗝️'}</span>
       <h1>{data.title}</h1>
       {katMeta.cena_low && (
         <p class="pillar-price-range">
@@ -37,12 +38,34 @@ const katMeta = kategorieData.find(k => k.slug === slug) || {};
       )}
     </header>
 
-    <div class="pillar-content">
+    <div class="pillar-content" id="pillar-content">
       <Content />
     </div>
 
     <!-- Lead form bezpośrednio pod treścią -->
     <LeadForm defaultKategoria={katMeta.nazwa || ''} />
+
+    <!-- Źródło CTA mid-pillar — JS przeniesie po pierwszym <h2> -->
+    <div id="cta-source" hidden>
+      <InlineCta variant="wycena" />
+    </div>
+    <script is:inline>
+      (function () {
+        const content = document.getElementById('pillar-content');
+        const source = document.getElementById('cta-source');
+        if (!content || !source) return;
+        const cta = source.firstElementChild;
+        if (!cta) return;
+        const headings = content.querySelectorAll('h2');
+        if (headings.length >= 1) {
+          const h2 = headings[0];
+          const nextSibling = h2.nextElementSibling;
+          const insertAfter = (nextSibling && nextSibling.tagName === 'P') ? nextSibling : h2;
+          insertAfter.parentNode.insertBefore(cta, insertAfter.nextSibling);
+          source.remove();
+        }
+      })();
+    </script>
 
     <!-- CTA do innych kategorii -->
     <section class="related-kat">

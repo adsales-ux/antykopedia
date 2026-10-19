@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Vintage key - granat tło, gold klucz -->
+  <rect width="64" height="64" rx="12" fill="#1a2847"/>
+
+  <!-- Główka klucza (ornament okrągły) -->
+  <circle cx="22" cy="22" r="10" fill="none" stroke="#c9a961" stroke-width="3.5"/>
+  <!-- Dziurka w główce -->
+  <circle cx="22" cy="22" r="3.5" fill="#1a2847"/>
+
+  <!-- Zdobienia na główce (4-promienne) -->
+  <path d="M22 10 L22 14 M22 30 L22 34 M10 22 L14 22 M30 22 L34 22" stroke="#c9a961" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Trzon klucza -->
+  <rect x="30" y="20.5" width="22" height="3" fill="#c9a961"/>
+
+  <!-- Zęby klucza -->
+  <rect x="42" y="23.5" width="3" height="5" fill="#c9a961"/>
+  <rect x="47" y="23.5" width="3" height="7" fill="#c9a961"/>
+
+  <!-- Dolna ornamentacja (opcjonalna linia dekoracyjna) -->
+  <path d="M16 44 L48 44" stroke="#c9a961" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+</svg>

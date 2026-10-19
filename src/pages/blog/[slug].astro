@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LeadForm from '../../components/LeadForm.astro';
+import InlineCta from '../../components/InlineCta.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -15,6 +16,10 @@ const { blog } = Astro.props;
 const { Content } = await render(blog);
 const data = blog.data;
 const dateStr = new Date(data.pubDate).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Który wariant CTA dla tego artykułu? Sylwetki + giełdy = kontakt, reszta = pytanie
+const ctaVariant = (data.kategoria === 'sylwetki' || data.kategoria === 'giełdy' || data.kategoria === 'wydarzenia')
+  ? 'kontakt' : 'pytanie';
 ---
 <BaseLayout title={data.title} description={data.description}>
   <nav class="breadcrumbs">
@@ -28,12 +33,36 @@ const dateStr = new Date(data.pubDate).toLocaleDateString('pl-PL', { day: 'numer
       <p class="blog-meta">📅 {dateStr}</p>
     </header>
 
-    <div class="blog-content">
+    <div class="blog-content" id="blog-content">
       <Content />
     </div>
 
     <LeadForm />
   </article>
+
+  <!-- Źródło CTA — JS przeniesie go po pierwszym <h2> w .blog-content -->
+  <div id="cta-source" hidden>
+    <InlineCta variant={ctaVariant} />
+  </div>
+
+  <script is:inline>
+    (function () {
+      const content = document.getElementById('blog-content');
+      const source = document.getElementById('cta-source');
+      if (!content || !source) return;
+      const cta = source.firstElementChild;
+      if (!cta) return;
+      const headings = content.querySelectorAll('h2');
+      if (headings.length >= 1) {
+        const h2 = headings[0];
+        // Wstaw PO pierwszym h2 i jego pierwszym paragrafie (jeśli jest)
+        const nextSibling = h2.nextElementSibling;
+        const insertAfter = (nextSibling && nextSibling.tagName === 'P') ? nextSibling : h2;
+        insertAfter.parentNode.insertBefore(cta, insertAfter.nextSibling);
+        source.remove();
+      }
+    })();
+  </script>
 </BaseLayout>
 
 <style>
