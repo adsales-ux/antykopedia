@@ -110,6 +110,9 @@ const fullCanonical = canonical || `https://antykopedia.pl${Astro.url.pathname}`
       gap: 16px;
     }
     .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       font-family: 'Playfair Display', serif;
       font-size: 26px;
       font-weight: 900;
@@ -198,7 +201,16 @@ const fullCanonical = canonical || `https://antykopedia.pl${Astro.url.pathname}`
 <body>
   <header>
     <div class="header-inner">
-      <a href="/" class="logo">🏛️ Antykopedia<span>.pl</span></a>
+      <a href="/" class="logo">
+        <svg class="logo-svg" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true">
+          <circle cx="22" cy="22" r="10" fill="none" stroke="#c9a961" stroke-width="4"/>
+          <circle cx="22" cy="22" r="3.5" fill="#1a2847"/>
+          <rect x="30" y="20.5" width="22" height="3" fill="#c9a961"/>
+          <rect x="42" y="23.5" width="3" height="5" fill="#c9a961"/>
+          <rect x="47" y="23.5" width="3" height="7" fill="#c9a961"/>
+        </svg>
+        Antykopedia<span>.pl</span>
+      </a>
       <nav>
         <ul>
           <li><a href="/kategorie/">Kategorie</a></li>
