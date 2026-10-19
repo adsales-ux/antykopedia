@@ -1,0 +1,228 @@
+---
+// LeadForm — "Wyceń swój antyk" (bezpłatnie)
+// Backend: Web3Forms (free, 250 submits/mc)
+// 1. Zarejestruj się: https://web3forms.com → Create Access Key
+// 2. Wklej key w zmienną WEB3FORMS_KEY (najlepiej env variable)
+// 3. Email target: kontakt@antykopedia.pl
+
+export interface Props {
+  defaultKategoria?: string;
+}
+const { defaultKategoria = '' } = Astro.props;
+const kategorie = [
+  'Meble antyczne',
+  'Zegary antyczne',
+  'Obrazy antyczne',
+  'Srebra antyczne',
+  'Numizmatyka (monety)',
+  'Porcelana',
+  'Biżuteria',
+  'Militaria',
+  'Książki antykwaryczne',
+  'Inne'
+];
+---
+<section class="lead-form-wrap">
+  <div class="lead-form-card">
+    <div class="lead-form-header">
+      <span class="lead-icon">💎</span>
+      <h2>Wyceń swój antyk — bezpłatnie</h2>
+      <p class="lead-sub">Dostaniesz orientacyjną wycenę w <strong>24h</strong>. Zero zobowiązań.</p>
+    </div>
+
+    <form action="https://api.web3forms.com/submit" method="POST" class="lead-form" enctype="multipart/form-data">
+      <!-- ZASTĄP tym kluczem swoim z web3forms.com (free) -->
+      <input type="hidden" name="access_key" value="PASTE_558d8c9c-8ff8-42e8-825c-d507356e1bf2" />
+      <input type="hidden" name="subject" value="Nowe zapytanie o wycenę antyku — Antykopedia.pl" />
+      <input type="hidden" name="from_name" value="Antykopedia.pl" />
+      <input type="hidden" name="redirect" value="https://antykopedia.pl/dziekujemy/" />
+
+      <div class="form-row">
+        <label for="kategoria">Kategoria antyku *</label>
+        <select name="kategoria" id="kategoria" required>
+          <option value="">— Wybierz kategorię —</option>
+          {kategorie.map(k => (
+            <option value={k} selected={k === defaultKategoria}>{k}</option>
+          ))}
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="opis">Opis przedmiotu *</label>
+        <textarea name="opis" id="opis" rows="4" required
+          placeholder="Np. komoda biedermeier, drewno orzechowe, 3 szuflady, wymiary 120x80x50 cm, dobry stan, dziedziczona po babci..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="zdjecia">Zdjęcia (opcjonalnie, max 5 plików po 5MB)</label>
+        <input type="file" name="attachment" id="zdjecia" accept="image/*" multiple />
+        <small class="hint">📸 Zdjęcia znacznie pomagają w wycenie (np. widok ogólny + zbliżenia na stemple, sygnatury, uszkodzenia)</small>
+      </div>
+
+      <div class="form-row-grid">
+        <div class="form-row">
+          <label for="imie">Imię *</label>
+          <input type="text" name="imie" id="imie" required />
+        </div>
+        <div class="form-row">
+          <label for="miasto">Miasto *</label>
+          <input type="text" name="miasto" id="miasto" required placeholder="np. Warszawa" />
+        </div>
+      </div>
+
+      <div class="form-row-grid">
+        <div class="form-row">
+          <label for="email">Email *</label>
+          <input type="email" name="email" id="email" required placeholder="jan@example.pl" />
+        </div>
+        <div class="form-row">
+          <label for="telefon">Telefon (opcjonalnie)</label>
+          <input type="tel" name="telefon" id="telefon" placeholder="+48 ..." />
+        </div>
+      </div>
+
+      <!-- Honeypot anti-spam -->
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
+
+      <div class="form-row rodo">
+        <label>
+          <input type="checkbox" name="zgoda" required />
+          <span>Wyrażam zgodę na przetwarzanie moich danych w celu kontaktu zwrotnego z wyceną (RODO). <a href="/polityka-prywatnosci/" target="_blank">Polityka prywatności</a></span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        📨 Wyślij zapytanie o wycenę
+      </button>
+
+      <p class="hint-footer">⏱️ Odpowiedź w ciągu 24h · Bez spamu · Bez ukrytych opłat</p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .lead-form-wrap {
+    margin: 48px 0;
+  }
+  .lead-form-card {
+    background: linear-gradient(135deg, #1a2847 0%, #0f1a2e 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 36px 32px;
+    box-shadow: 0 10px 40px rgba(26,40,71,0.25);
+    border: 2px solid #c9a961;
+  }
+  .lead-form-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .lead-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .lead-form-header h2 {
+    color: #c9a961 !important;
+    margin: 0 0 8px !important;
+    font-size: 26px !important;
+  }
+  .lead-sub {
+    color: #ebe4d2;
+    font-size: 15px;
+  }
+  .lead-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-row-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .lead-form label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #c9a961;
+    letter-spacing: 0.3px;
+  }
+  .lead-form input[type="text"],
+  .lead-form input[type="email"],
+  .lead-form input[type="tel"],
+  .lead-form input[type="file"],
+  .lead-form select,
+  .lead-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #c9a961;
+    border-radius: 8px;
+    background: #f8f4ec;
+    color: #1a1a1a;
+    font-family: inherit;
+    font-size: 15px;
+    transition: all 0.2s;
+  }
+  .lead-form input:focus,
+  .lead-form select:focus,
+  .lead-form textarea:focus {
+    outline: none;
+    border-color: #e3c988;
+    box-shadow: 0 0 0 3px rgba(201,169,97,0.3);
+  }
+  .lead-form textarea { resize: vertical; min-height: 100px; }
+  .hint {
+    color: #ebe4d2;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .rodo {
+    margin: 8px 0;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .rodo label {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    color: #ebe4d2;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .rodo input { margin-top: 3px; }
+  .rodo a { color: #c9a961; text-decoration: underline; }
+  .btn-submit {
+    background: #c9a961;
+    color: #1a2847;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 8px;
+    font-family: inherit;
+  }
+  .btn-submit:hover {
+    background: #e3c988;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201,169,97,0.4);
+  }
+  .hint-footer {
+    text-align: center;
+    color: #ebe4d2;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  @media (max-width: 640px) {
+    .lead-form-card { padding: 24px 20px; }
+    .form-row-grid { grid-template-columns: 1fr; gap: 16px; }
+    .lead-form-header h2 { font-size: 22px !important; }
+  }
+</style>

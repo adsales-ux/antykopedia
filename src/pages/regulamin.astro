@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Regulamin — Antykopedia.pl"
+  description="Regulamin serwisu Antykopedia.pl. Zasady korzystania, usługi wyceny, odpowiedzialność, reklamacje."
+>
+  <nav class="breadcrumbs"><a href="/">Home</a> › Regulamin</nav>
+  <article class="prose">
+    <h1>Regulamin serwisu Antykopedia.pl</h1>
+    <p><em>Obowiązuje od: 18 października 2026</em></p>
+
+    <h2>§1. Operator</h2>
+    <p>Serwis antykopedia.pl prowadzi <strong>AdSales sp. z o.o.</strong> (NIP: 8133818258). Kontakt: kontakt@antykopedia.pl.</p>
+
+    <h2>§2. Przedmiot usług</h2>
+    <ol>
+      <li>Portal publikuje treści eksperckie dotyczące antyków (poradniki, cenniki, słownik).</li>
+      <li>Portal udostępnia formularz <strong>bezpłatnej wyceny antyku</strong> — orientacyjnej, niewiążącej.</li>
+      <li>Portal udostępnia moduł <strong>Marketplace</strong> (w rozwoju) do kupna i sprzedaży antyków.</li>
+    </ol>
+
+    <h2>§3. Zasady wyceny</h2>
+    <ol>
+      <li>Wycena przez formularz jest <strong>bezpłatna i orientacyjna</strong>.</li>
+      <li>Nie stanowi oficjalnej ekspertyzy ani rzeczoznawstwa.</li>
+      <li>Nie jesteśmy odpowiedzialni za decyzje zakupu/sprzedaży oparte na naszej wycenie.</li>
+      <li>Odpowiedź wysyłamy w 24-72h roboczych na podany email.</li>
+    </ol>
+
+    <h2>§4. Prawa własności intelektualnej</h2>
+    <p>Treści serwisu (artykuły, grafiki, zdjęcia) są chronione prawem autorskim. Zabronione jest ich kopiowanie bez zgody. Cytaty z linkiem źródłowym są dozwolone (zgodnie z prawem cytatu).</p>
+
+    <h2>§5. Reklamacje</h2>
+    <ol>
+      <li>Reklamacje usług wyceny — email: kontakt@antykopedia.pl.</li>
+      <li>Rozpatrzenie w 14 dni roboczych.</li>
+    </ol>
+
+    <h2>§6. Zmiany regulaminu</h2>
+    <p>Operator zastrzega prawo zmiany regulaminu. Zmiany publikowane są z co najmniej 7-dniowym wyprzedzeniem.</p>
+
+    <h2>§7. Postanowienia końcowe</h2>
+    <p>W sprawach nieuregulowanych stosuje się przepisy prawa polskiego. Sąd właściwy: siedziby operatora.</p>
+  </article>
+</BaseLayout>
+
+<style>
+  .prose { background: white; padding: 32px; border-radius: 12px; border: 1px solid #e5dcc6; line-height: 1.75; }
+  .prose h1 { color: #1a2847; }
+  .prose h2 { color: #1a2847; border-bottom: 2px solid #c9a961; padding-bottom: 6px; margin-top: 28px; }
+  .prose strong { color: #1a2847; }
+  .prose ol { padding-left: 24px; }
+  .prose li { margin: 6px 0; }
+</style>

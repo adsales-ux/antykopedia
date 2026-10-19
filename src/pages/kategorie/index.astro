@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { kategorie } from '../../data/kategorie.js';
+---
+<BaseLayout
+  title="Kategorie antyków — katalog Antykopedia.pl 2026"
+  description="Pełny katalog kategorii antyków w Polsce: meble, zegary, obrazy, srebra, numizmatyka. Każda kategoria z cennikiem, wyceną i poradnikiem autentyczności."
+>
+  <nav class="breadcrumbs"><a href="/">Home</a> › Kategorie</nav>
+  <h1>Katalog kategorii antyków</h1>
+  <p style="color:#666;margin:12px 0 32px;">Wybierz kategorię by zobaczyć pełen przewodnik: wycena, autentyczność, cennik, gdzie sprzedać.</p>
+
+  <div class="grid">
+    {kategorie.map(k => (
+      <a href={`/kategorie/${k.slug}/`} class="card">
+        <span class="icon">{k.icon}</span>
+        <h2>{k.nazwa}</h2>
+        <p class="price">{k.cena_low.toLocaleString('pl-PL')}–{k.cena_high.toLocaleString('pl-PL')} zł</p>
+        <p class="desc">{k.opis}</p>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card {
+    background: white; padding: 28px; border-radius: 12px;
+    border: 1px solid #e5dcc6; text-decoration: none; color: inherit;
+    transition: all .25s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,40,71,.15); border-color: #c9a961; text-decoration: none; }
+  .icon { font-size: 44px; display: block; margin-bottom: 8px; }
+  .card h2 { color: #1a2847; font-size: 22px; margin: 0 0 8px; }
+  .price { color: #a08540; font-weight: 700; margin-bottom: 10px; }
+  .desc { color: #666; font-size: 14px; }
+</style>

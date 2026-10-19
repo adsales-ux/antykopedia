@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Dziękujemy! Twoje zgłoszenie zostało wysłane — Antykopedia.pl"
+  description="Dziękujemy za zgłoszenie. Twoja wycena antyku zostanie wykonana w 24 godziny. Sprawdź skrzynkę email."
+>
+  <section class="thanks">
+    <div class="icon">✅</div>
+    <h1>Dziękujemy!</h1>
+    <p class="lead">Twoje zgłoszenie zostało pomyślnie wysłane.</p>
+    <p>Nasi eksperci przeanalizują Twój przedmiot i wyślą orientacyjną wycenę <strong>w 24-72 godziny</strong> na podany adres email.</p>
+
+    <div class="next">
+      <h2>Co dalej?</h2>
+      <ul>
+        <li>📩 Sprawdź skrzynkę email (również folder SPAM)</li>
+        <li>📖 W międzyczasie przeczytaj nasze <a href="/blog/">poradniki eksperckie</a></li>
+        <li>🏛️ Lub przejrzyj <a href="/kategorie/">katalog kategorii antyków</a></li>
+      </ul>
+    </div>
+
+    <a href="/" class="cta">← Wróć na stronę główną</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .thanks { background: linear-gradient(135deg, #f8f4ec, #ebe4d2); padding: 48px 32px; border-radius: 12px; text-align: center; border: 1px solid #c9a961; }
+  .icon { font-size: 72px; margin-bottom: 16px; }
+  .thanks h1 { color: #1a2847; font-size: 42px; margin-bottom: 12px; }
+  .thanks .lead { font-size: 20px; color: #333; margin-bottom: 20px; }
+  .thanks p { line-height: 1.6; color: #333; }
+  .thanks strong { color: #1a2847; }
+  .next { background: white; padding: 24px; border-radius: 12px; margin: 32px auto; max-width: 500px; text-align: left; }
+  .next h2 { color: #1a2847; margin: 0 0 12px; }
+  .next ul { padding-left: 20px; line-height: 2; }
+  .next a { color: #a08540; }
+  .cta { display: inline-block; background: #1a2847; color: #c9a961; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; margin-top: 20px; }
+  .cta:hover { background: #243b63; text-decoration: none; }
+</style>

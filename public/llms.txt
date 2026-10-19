@@ -1,0 +1,20 @@
+# Antykopedia.pl
+
+> Portal ekspercki o antykach w Polsce 2026. Bezpłatna wycena, cenniki, poradniki, słownik, marketplace.
+
+## Główne sekcje
+- /kategorie/ — katalog kategorii antyków (meble, zegary, obrazy, srebra, numizmatyka)
+- /blog/ — poradniki eksperckie (jak rozpoznać, wycenić, sprzedać, konserwować)
+- /slownik/ — słownik pojęć antykwarycznych A-Z
+- /wycen/ — bezpłatna wycena antyku online w 24h
+- /oferty/ — marketplace (w rozwoju)
+
+## Operator
+AdSales sp. z o.o. (NIP 8133818258). Email: kontakt@antykopedia.pl.
+
+## Specjalizacja
+- Meble antyczne (biedermeier, art deco, Chippendale, Thonet)
+- Zegary (szafowe, kominkowe, Patek Philippe, Omega)
+- Obrazy (XIX w., Młoda Polska, Beksiński, Nowosielski)
+- Srebra (Fraget, Norblin, próby 800-958, sterling)
+- Numizmatyka (II RP, PRL, dukaty, talary, monety piastowskie)

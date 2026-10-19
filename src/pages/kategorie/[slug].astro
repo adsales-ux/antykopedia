@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { getCollection, render } from 'astro:content';
+import { kategorie as kategorieData } from '../../data/kategorie.js';
+
+export async function getStaticPaths() {
+  const kategorie = await getCollection('kategorie');
+  return kategorie.map((k) => ({
+    params: { slug: k.id.replace('.md', '') },
+    props: { kategoria: k }
+  }));
+}
+
+const { kategoria } = Astro.props;
+const { Content } = await render(kategoria);
+const data = kategoria.data;
+const slug = kategoria.id.replace('.md', '');
+const katMeta = kategorieData.find(k => k.slug === slug) || {};
+---
+<BaseLayout
+  title={data.title}
+  description={data.description}
+>
+  <nav class="breadcrumbs">
+    <a href="/">Home</a> › <a href="/kategorie/">Kategorie</a> › {katMeta.nazwa || data.title}
+  </nav>
+
+  <article class="pillar">
+    <header class="pillar-head">
+      <span class="pillar-icon">{katMeta.icon || '💎'}</span>
+      <h1>{data.title}</h1>
+      {katMeta.cena_low && (
+        <p class="pillar-price-range">
+          💰 Zakres cen: <strong>{katMeta.cena_low.toLocaleString('pl-PL')}–{katMeta.cena_high.toLocaleString('pl-PL')} zł</strong>
+        </p>
+      )}
+    </header>
+
+    <div class="pillar-content">
+      <Content />
+    </div>
+
+    <!-- Lead form bezpośrednio pod treścią -->
+    <LeadForm defaultKategoria={katMeta.nazwa || ''} />
+
+    <!-- CTA do innych kategorii -->
+    <section class="related-kat">
+      <h2>Zobacz inne kategorie antyków</h2>
+      <div class="rel-grid">
+        {kategorieData.filter(k => k.slug !== slug).map(k => (
+          <a href={`/kategorie/${k.slug}/`} class="rel-card">
+            <span>{k.icon}</span>
+            <strong>{k.nazwa}</strong>
+          </a>
+        ))}
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .pillar-head {
+    text-align: center;
+    padding: 32px 24px;
+    background: linear-gradient(135deg, #f8f4ec 0%, #ebe4d2 100%);
+    border-radius: 12px;
+    margin-bottom: 32px;
+    border: 1px solid #e5dcc6;
+  }
+  .pillar-icon { font-size: 56px; display: block; margin-bottom: 8px; }
+  .pillar-price-range { font-size: 18px; color: #a08540; margin-top: 12px; }
+  .pillar-content {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid #e5dcc6;
+    line-height: 1.75;
+  }
+  .pillar-content h2 {
+    color: #1a2847;
+    border-bottom: 2px solid #c9a961;
+    padding-bottom: 8px;
+    margin-top: 32px;
+  }
+  .pillar-content h3 { color: #1a2847; margin-top: 24px; }
+  .pillar-content p { margin: 12px 0; color: #333; }
+  .pillar-content ul, .pillar-content ol { margin: 12px 0 12px 24px; }
+  .pillar-content li { margin: 6px 0; }
+  .pillar-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+  }
+  .pillar-content th {
+    background: #1a2847;
+    color: #c9a961;
+    padding: 12px;
+    text-align: left;
+  }
+  .pillar-content td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5dcc6;
+  }
+  .pillar-content tr:nth-child(even) { background: #fafaf7; }
+  .pillar-content strong { color: #1a2847; }
+  .pillar-content a { color: #a08540; }
+
+  .related-kat { margin-top: 48px; }
+  .rel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .rel-card {
+    background: white;
+    padding: 16px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #e5dcc6;
+    text-decoration: none;
+    color: #1a2847;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .rel-card:hover { border-color: #c9a961; transform: translateY(-2px); text-decoration: none; }
+  .rel-card span { font-size: 28px; }
+  .rel-card strong { font-size: 14px; }
+
+  @media (max-width: 640px) {
+    .pillar-content { padding: 20px; }
+    .pillar-content table { font-size: 13px; display: block; overflow-x: auto; }
+  }
+</style>

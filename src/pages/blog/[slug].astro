@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const blogi = await getCollection('blog');
+  return blogi.map((b) => ({
+    params: { slug: b.id.replace('.md', '') },
+    props: { blog: b }
+  }));
+}
+
+const { blog } = Astro.props;
+const { Content } = await render(blog);
+const data = blog.data;
+const dateStr = new Date(data.pubDate).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout title={data.title} description={data.description}>
+  <nav class="breadcrumbs">
+    <a href="/">Home</a> › <a href="/blog/">Blog</a> › {data.title}
+  </nav>
+
+  <article class="blog-article">
+    <header class="blog-head">
+      {data.kategoria && <span class="kat-badge">{data.kategoria}</span>}
+      <h1>{data.title}</h1>
+      <p class="blog-meta">📅 {dateStr}</p>
+    </header>
+
+    <div class="blog-content">
+      <Content />
+    </div>
+
+    <LeadForm />
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-head {
+    background: linear-gradient(135deg, #f8f4ec, #ebe4d2);
+    padding: 32px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+    border: 1px solid #e5dcc6;
+  }
+  .kat-badge {
+    display: inline-block;
+    background: #c9a961;
+    color: #1a2847;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .blog-meta { color: #666; font-size: 14px; margin-top: 8px; }
+  .blog-content {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid #e5dcc6;
+    line-height: 1.75;
+  }
+  .blog-content h2 { color: #1a2847; border-bottom: 2px solid #c9a961; padding-bottom: 8px; margin-top: 32px; }
+  .blog-content h3 { color: #1a2847; margin-top: 20px; }
+  .blog-content p { margin: 12px 0; }
+  .blog-content ul, .blog-content ol { margin: 12px 0 12px 24px; }
+  .blog-content strong { color: #1a2847; }
+  .blog-content a { color: #a08540; }
+  .blog-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  .blog-content th {
+    background: #1a2847;
+    color: #c9a961;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .blog-content td { padding: 10px 12px; border-bottom: 1px solid #e5dcc6; }
+  @media (max-width: 640px) {
+    .blog-content { padding: 20px; }
+    .blog-content table { font-size: 13px; display: block; overflow-x: auto; }
+  }
+</style>

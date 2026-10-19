@@ -1,0 +1,207 @@
+---
+// Antykopedia.pl — Base Layout (Granat + Złoto + Kremowe tło)
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonical?: string;
+}
+const { title, description, ogImage = '/og-image.png', canonical } = Astro.props;
+const fullCanonical = canonical || `https://antykopedia.pl${Astro.url.pathname}`;
+---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={fullCanonical} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={fullCanonical} />
+  <meta property="og:site_name" content="Antykopedia.pl" />
+  <meta property="og:locale" content="pl_PL" />
+  <meta property="og:image" content={`https://antykopedia.pl${ogImage}`} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- AdSense (ten sam co cennikibudowlane: pub-1844680208723982) -->
+  <meta name="google-adsense-account" content="ca-pub-1844680208723982" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1844680208723982" crossorigin="anonymous"></script>
+
+  <style is:global>
+    :root {
+      --navy: #1a2847;
+      --navy-dark: #0f1a2e;
+      --gold: #c9a961;
+      --gold-light: #e3c988;
+      --gold-dark: #a08540;
+      --cream: #f8f4ec;
+      --cream-dark: #ebe4d2;
+      --text: #1a1a1a;
+      --text-muted: #666;
+      --taupe: #8b7355;
+      --border: #e5dcc6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.6;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+    h1 { font-size: 36px; font-weight: 900; margin-bottom: 16px; }
+    h2 { font-size: 28px; font-weight: 700; margin: 32px 0 16px; }
+    h3 { font-size: 22px; font-weight: 700; margin: 24px 0 12px; }
+    a { color: var(--gold-dark); text-decoration: none; }
+    a:hover { color: var(--gold); text-decoration: underline; }
+
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 20px 24px;
+      box-shadow: 0 4px 12px rgba(26,40,71,0.15);
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: white;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .logo span { color: var(--gold); }
+    nav ul {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: var(--cream);
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .cta-nav {
+      background: var(--gold);
+      color: var(--navy) !important;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 700 !important;
+      transition: all 0.2s;
+    }
+    .cta-nav:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+    }
+
+    .breadcrumbs {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .breadcrumbs a { color: var(--gold-dark); }
+
+    .btn-gold {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-gold:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(201,169,97,0.3);
+    }
+
+    footer {
+      background: var(--navy-dark);
+      color: var(--cream);
+      padding: 32px 24px;
+      margin-top: 48px;
+      text-align: center;
+      font-size: 14px;
+    }
+    footer a { color: var(--gold); }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 28px; }
+      h2 { font-size: 22px; }
+      h3 { font-size: 18px; }
+      nav ul { gap: 16px; font-size: 14px; }
+      main { padding: 20px 16px 32px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo">🏛️ Antykopedia<span>.pl</span></a>
+      <nav>
+        <ul>
+          <li><a href="/kategorie/">Kategorie</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/slownik/">Słownik</a></li>
+          <li><a href="/wycen/" class="cta-nav">💎 Wyceń antyk</a></li>
+          <li><a href="/oferty/">Marketplace</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer>
+    <p>© 2026 Antykopedia.pl · prowadzone przez <strong>AdSales sp. z o.o.</strong> (NIP: 8133818258)</p>
+    <p style="margin-top:8px;">
+      <a href="/polityka-prywatnosci/">Polityka prywatności</a> ·
+      <a href="/regulamin/">Regulamin</a> ·
+      <a href="/kontakt/">Kontakt</a>
+    </p>
+  </footer>
+</body>
+</html>
