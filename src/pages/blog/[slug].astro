@@ -20,8 +20,22 @@ const dateStr = new Date(data.pubDate).toLocaleDateString('pl-PL', { day: 'numer
 // Który wariant CTA dla tego artykułu? Sylwetki + giełdy = kontakt, reszta = pytanie
 const ctaVariant = (data.kategoria === 'sylwetki' || data.kategoria === 'giełdy' || data.kategoria === 'wydarzenia')
   ? 'kontakt' : 'pytanie';
+
+// Schema.org — BlogPosting + Breadcrumbs
+const articleSchema = {
+  type: 'BlogPosting' as const,
+  datePublished: new Date(data.pubDate).toISOString(),
+  dateModified: data.updatedDate ? new Date(data.updatedDate).toISOString() : new Date(data.pubDate).toISOString(),
+  author: data.autorNazwa || 'Redakcja Antykopedia.pl',
+  image: data.ogImage
+};
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Blog', url: '/blog/' },
+  { name: data.title, url: `/blog/${blog.id.replace('.md','')}/` }
+];
 ---
-<BaseLayout title={data.title} description={data.description}>
+<BaseLayout title={data.title} description={data.description} articleSchema={articleSchema} breadcrumbs={breadcrumbs}>
   <nav class="breadcrumbs">
     <a href="/">Home</a> › <a href="/blog/">Blog</a> › {data.title}
   </nav>

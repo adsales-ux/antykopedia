@@ -5,9 +5,113 @@ export interface Props {
   description: string;
   ogImage?: string;
   canonical?: string;
+  // Schema.org — opcjonalne dodatkowe dane dla podstron (blog, kategoria)
+  articleSchema?: {
+    type?: 'BlogPosting' | 'Article';
+    datePublished?: string;
+    dateModified?: string;
+    author?: string;
+    image?: string;
+  };
+  breadcrumbs?: Array<{ name: string; url: string }>;
+  faqSchema?: Array<{ q: string; a: string }>;
 }
-const { title, description, ogImage = '/og-image.png', canonical } = Astro.props;
+const { title, description, ogImage = '/og-image.png', canonical, articleSchema, breadcrumbs, faqSchema } = Astro.props;
 const fullCanonical = canonical || `https://antykopedia.pl${Astro.url.pathname}`;
+
+// Build schemas conditionally
+const schemas: any[] = [];
+
+// 1. WebSite — na każdej stronie
+schemas.push({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Antykopedia.pl',
+  url: 'https://antykopedia.pl/',
+  description: 'Portal informacyjny o antykach — wycena, katalog kategorii, słownik antykwariusza, poradniki dla kolekcjonerów i spadkobierców.',
+  inLanguage: 'pl-PL',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Antykopedia.pl',
+    url: 'https://antykopedia.pl/'
+  }
+});
+
+// 2. Organization — na każdej stronie
+schemas.push({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Antykopedia.pl',
+  url: 'https://antykopedia.pl/',
+  logo: 'https://antykopedia.pl/favicon.svg',
+  description: 'Portal o antykach prowadzony przez AdSales sp. z o.o.',
+  foundingDate: '2026',
+  parentOrganization: {
+    '@type': 'Organization',
+    name: 'AdSales sp. z o.o.',
+    taxID: 'PL8133818258'
+  }
+});
+
+// 3. BlogPosting / Article — tylko gdy podane
+if (articleSchema?.datePublished) {
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': articleSchema.type || 'BlogPosting',
+    headline: title,
+    description: description,
+    datePublished: articleSchema.datePublished,
+    dateModified: articleSchema.dateModified || articleSchema.datePublished,
+    author: {
+      '@type': 'Person',
+      name: articleSchema.author || 'Redakcja Antykopedia.pl'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Antykopedia.pl',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://antykopedia.pl/favicon.svg'
+      }
+    },
+    image: articleSchema.image ? `https://antykopedia.pl${articleSchema.image}` : `https://antykopedia.pl${ogImage}`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': fullCanonical
+    },
+    inLanguage: 'pl-PL'
+  });
+}
+
+// 4. BreadcrumbList — gdy podane
+if (breadcrumbs && breadcrumbs.length > 0) {
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.name,
+      item: b.url.startsWith('http') ? b.url : `https://antykopedia.pl${b.url}`
+    }))
+  });
+}
+
+// 5. FAQPage — gdy podane
+if (faqSchema && faqSchema.length > 0) {
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqSchema.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.a
+      }
+    }))
+  });
+}
 ---
 <!DOCTYPE html>
 <html lang="pl">
@@ -32,6 +136,12 @@ const fullCanonical = canonical || `https://antykopedia.pl${Astro.url.pathname}`
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`https://antykopedia.pl${ogImage}`} />
+
+  <!-- Schema.org JSON-LD -->
+  {schemas.map(s => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

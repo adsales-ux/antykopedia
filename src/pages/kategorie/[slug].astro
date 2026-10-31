@@ -18,10 +18,25 @@ const { Content } = await render(kategoria);
 const data = kategoria.data;
 const slug = kategoria.id.replace('.md', '');
 const katMeta = kategorieData.find(k => k.slug === slug) || {};
+
+// Schema.org — Article (bo kategoria to treść pillar) + Breadcrumbs
+const articleSchema = {
+  type: 'Article' as const,
+  datePublished: data.pubDate ? new Date(data.pubDate).toISOString() : '2026-01-01T00:00:00.000Z',
+  dateModified: data.updatedDate ? new Date(data.updatedDate).toISOString() : (data.pubDate ? new Date(data.pubDate).toISOString() : '2026-10-27T00:00:00.000Z'),
+  author: data.autorNazwa || 'Redakcja Antykopedia.pl'
+};
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Kategorie', url: '/kategorie/' },
+  { name: katMeta.nazwa || data.title, url: `/kategorie/${slug}/` }
+];
 ---
 <BaseLayout
   title={data.title}
   description={data.description}
+  articleSchema={articleSchema}
+  breadcrumbs={breadcrumbs}
 >
   <nav class="breadcrumbs">
     <a href="/">Home</a> › <a href="/kategorie/">Kategorie</a> › {katMeta.nazwa || data.title}
