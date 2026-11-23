@@ -1,6 +1,6 @@
 ---
-title: "Numizmatyka 2026 — monety polskie i obce, cennik, wycena"
-description: "Numizmatyka 2026: monety II RP od 50 zł, dukat 500-50k, moneta Zygmunta III 150-15k zł. Jak rozpoznać oryginał, próby bicia, gdzie wycenić."
+title: "Numizmatyka 2026 — cennik monet polskich [katalog + wycena]"
+description: "💰 Cennik monet polskich 2026: II RP od 50 zł, dukat 500-50k zł, Zygmunt III 150-15k. Katalog + jak rozpoznać oryginał + gdzie bezpłatnie wycenić."
 pubDate: 2026-10-18
 icon: "🪙"
 cena_low: 20

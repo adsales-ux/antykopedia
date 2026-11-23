@@ -1,6 +1,6 @@
 ---
-title: "Jak rozpoznać antyk mebla od stylowego — 7 testów eksperta"
-description: "Czym różni się antyk >100 lat od mebla stylowego? 7 praktycznych testów: jaskółcze ogony, patyna, śruby, płótno, zapach. Checklist przed kupnem."
+title: "Antyk czy mebel stylowy? 7 testów eksperta [checklist]"
+description: "🔍 Jak rozpoznać prawdziwy antyk (ponad 100 lat) od mebla stylowego — 7 testów: jaskółcze ogony, patyna, śruby, płótno, zapach. Przed kupnem sprawdź to."
 pubDate: 2026-10-18
 kategoria: "meble antyczne"
 ---

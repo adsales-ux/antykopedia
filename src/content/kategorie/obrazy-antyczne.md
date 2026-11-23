@@ -1,6 +1,6 @@
 ---
-title: "Obrazy antyczne 2026 — wycena, autentyczność, cennik"
-description: "Obrazy antyczne 2026: XIX-wieczne pejzaże 2-25k, portrety 3-50k, Młoda Polska 15-500k zł. Jak rozpoznać oryginał od kopii, gdzie wycenić i sprzedać."
+title: "Obrazy antyczne 2026 — cennik 2 tys.-500 tys. zł [wycena]"
+description: "🎨 Cennik obrazów antycznych 2026: XIX w. pejzaże 2-25k, portrety 3-50k, Młoda Polska 15-500k zł. Jak rozpoznać oryginał od kopii + bezpłatna wycena online."
 pubDate: 2026-10-18
 icon: "🖼️"
 cena_low: 500

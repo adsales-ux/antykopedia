@@ -1,6 +1,6 @@
 ---
-title: "Srebra antyczne 2026 — próby, znakowanie, cennik"
-description: "Srebra antyczne 2026: zastawa 800-15 000 zł, cukiernice 400-5k, lichtarze 500-8k. Próby 800/925/935. Jak odczytać punce, wycenić, czyścić."
+title: "Srebra antyczne 2026 — cennik 400 zł-15 tys. [Fraget, Norblin]"
+description: "💎 Cennik sreber antycznych 2026: zastawa 800-15k, cukiernice 400-5k, lichtarze 500-8k zł. Fraget, Norblin, próby 800/925. Jak odczytać punce + darmowa wycena."
 pubDate: 2026-10-18
 icon: "🥈"
 cena_low: 300

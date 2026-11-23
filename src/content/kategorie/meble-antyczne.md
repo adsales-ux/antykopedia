@@ -1,6 +1,6 @@
 ---
-title: "Meble antyczne 2026 — cennik, wycena, gdzie sprzedać"
-description: "Meble antyczne 2026: komoda biedermeier 2 500-15 000 zł, szafa art deco 3 000-12 000, krzesła Chippendale 400-2 500 zł. Jak rozpoznać autentyczność + gdzie sprzedać."
+title: "Meble antyczne 2026 — cennik 400 zł-15 tys. [katalog + wycena]"
+description: "🪑 Cennik mebli antycznych 2026: biedermeier 2,5-15k, art deco 3-12k, Chippendale 400-2,5k zł. Katalog stylów + jak rozpoznać oryginał + gdzie bezpłatnie wycenić."
 pubDate: 2026-10-18
 icon: "🪑"
 cena_low: 500

@@ -1,6 +1,6 @@
 ---
-title: "Zegary antyczne 2026 — wycena, cennik, kolekcjonerstwo"
-description: "Zegary antyczne 2026: szafowe 3-25k zł, kominkowe 1,5-12k, kieszonkowe 500-50k. Patek, Omega, Longines, polskie Beta. Jak rozpoznać, wycenić, konserwować."
+title: "Zegary antyczne 2026 — cennik 500 zł-50 tys. [Patek, Omega]"
+description: "⏰ Cennik zegarów antycznych 2026: szafowe 3-25k, kominkowe 1,5-12k, kieszonkowe 500-50k zł. Patek, Omega, Longines, Beta. Jak rozpoznać + bezpłatna wycena."
 pubDate: 2026-10-18
 icon: "🕰️"
 cena_low: 800

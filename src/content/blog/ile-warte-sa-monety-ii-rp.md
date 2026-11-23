@@ -1,6 +1,6 @@
 ---
-title: "Ile warte są monety II RP — ranking 2026"
-description: "Monety II RP 2026: od 50 zł (grosze) do 150 tys. zł (20 zł Chrobry). Pełen cennik + stany zachowania + gdzie sprzedać."
+title: "Monety II RP 2026 — cennik od 50 zł do 150 tys. [ranking]"
+description: "💰 Cennik monet II RP 2026: 5 zł Jadwiga 400-4500 zł, 20 zł Chrobry 8-150 tys. Pełna tabela cen wg stanu VF/XF/UNC + gdzie bezpiecznie sprzedać."
 pubDate: 2026-10-13
 kategoria: "numizmatyka"
 ---
